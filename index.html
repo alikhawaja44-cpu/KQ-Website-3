@@ -240,7 +240,32 @@ footer p{font-size:.73rem;color:var(--text-light);margin-top:.15rem;letter-spaci
 .contact-bar{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-top:.6rem}.contact-bar a{font-size:.78rem;font-weight:600;color:var(--gold)}
 
 /* === RESPONSIVE === */
-@media(max-width:960px){.wrap{flex-direction:column}.scol{width:100%;order:-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}}
+/* === MOBILE TOC — Floating pill + slide-up drawer === */
+.mob-toc-pill{display:none;position:fixed;bottom:4.2rem;left:50%;transform:translateX(-50%) translateY(80px);z-index:148;padding:.55rem 1.3rem;border-radius:50px;background:rgba(44,42,52,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:rgba(250,246,238,0.85);font-size:.78rem;font-weight:600;border:1px solid rgba(250,246,238,0.08);cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 20px rgba(26,28,48,0.2),0 0 30px rgba(164,137,69,0.06);gap:.4rem;align-items:center;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0;letter-spacing:.02em;white-space:nowrap}
+.mob-toc-pill.show{transform:translateX(-50%) translateY(0);opacity:1}
+.mob-toc-pill svg{width:14px;height:14px;color:var(--gold-light)}
+.mob-toc-pill .pill-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:dotPulse 2.5s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+.mob-toc-drawer-overlay{position:fixed;inset:0;background:rgba(26,28,48,0.3);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:250;opacity:0;pointer-events:none;transition:opacity .35s}
+.mob-toc-drawer-overlay.open{opacity:1;pointer-events:auto}
+
+.mob-toc-drawer{position:fixed;bottom:0;left:0;right:0;z-index:251;background:rgba(250,246,238,0.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);box-shadow:0 -12px 50px rgba(26,28,48,0.12);max-height:75vh;max-height:75svh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-top:1px solid rgba(255,255,255,0.5)}
+.mob-toc-drawer-overlay.open .mob-toc-drawer{transform:translateY(0)}
+
+.mob-toc-handle{width:36px;height:4px;border-radius:4px;background:rgba(44,42,52,0.15);margin:10px auto 0}
+.mob-toc-head{padding:1rem 1.5rem .6rem;display:flex;align-items:center;justify-content:space-between}
+.mob-toc-head h3{font-family:var(--font-head);font-size:1.15rem;font-weight:700;color:var(--text);margin:0}
+.mob-toc-head span{font-size:.7rem;color:var(--text-light);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.mob-toc-links{padding:.4rem 1rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:.3rem}
+.mob-toc-links a{display:flex;align-items:center;gap:.5rem;padding:.65rem .8rem;border-radius:10px;color:var(--text-mid);text-decoration:none;font-size:.82rem;font-weight:520;transition:all .2s;-webkit-tap-highlight-color:transparent;line-height:1.3}
+.mob-toc-links a:hover,.mob-toc-links a:active{color:var(--gold-dark);background:var(--gold-muted)}
+.mob-toc-links a .toc-num{width:22px;height:22px;border-radius:6px;background:rgba(44,42,52,0.05);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:var(--text-light);flex-shrink:0}
+.mob-toc-links a:hover .toc-num,.mob-toc-links a:active .toc-num{background:var(--gold-muted);color:var(--gold-dark)}
+.mob-toc-links a.active-sec{color:var(--gold-dark);background:var(--gold-muted)}
+.mob-toc-links a.active-sec .toc-num{background:var(--gold);color:#fff}
+
+@media(max-width:960px){.wrap{flex-direction:column}.scol{width:100%;order:-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}#tc{display:none}.mob-toc-pill{display:flex}}
 @media(max-width:600px){.stats{margin-top:-50px;padding:0 1rem}.stats-g{grid-template-columns:repeat(2,1fr);gap:.6rem}article{border-radius:16px}.hero-c h1 br{display:none}.tw{border-radius:10px}table{font-size:.74rem}th,td{padding:.5rem .6rem}.modal{border-radius:18px;margin:.5rem}.modal-head{padding:1.5rem 1.4rem 0}.modal-body{padding:1.2rem 1.4rem 1.5rem}.fg-row{grid-template-columns:1fr}.cta-banner{padding:1.5rem 1.3rem;border-radius:14px}.trust-in{gap:1rem}.hero-fade{height:80px}}
 @media(max-width:380px){.sn{font-size:1.2rem}.hcta{padding:.65rem 1.3rem;font-size:.8rem}.hcta2{padding:.6rem 1.1rem;font-size:.78rem}}
 
@@ -537,6 +562,40 @@ footer p{font-size:.73rem;color:var(--text-light);margin-top:.15rem;letter-spaci
 </aside>
 </div>
 
+<!-- MOBILE TOC — Floating pill + slide-up drawer -->
+<button class="mob-toc-pill" id="mobTocPill">
+  <span class="pill-dot"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h12"/><path d="M4 18h8"/></svg>
+  Contents
+</button>
+<div class="mob-toc-drawer-overlay" id="mobTocOverlay">
+  <div class="mob-toc-drawer" id="mobTocDrawer">
+    <div class="mob-toc-handle"></div>
+    <div class="mob-toc-head"><h3>Contents</h3><span>19 Sections</span></div>
+    <div class="mob-toc-links" id="mobTocLinks">
+      <a href="#what"><span class="toc-num">01</span>Spouse Visa</a>
+      <a href="#routes"><span class="toc-num">02</span>Route Comparison</a>
+      <a href="#eligibility"><span class="toc-num">03</span>Eligibility</a>
+      <a href="#financial"><span class="toc-num">04</span>Financial</a>
+      <a href="#caseworker"><span class="toc-num">05</span>Caseworkers</a>
+      <a href="#relationship"><span class="toc-num">06</span>Evidence</a>
+      <a href="#english"><span class="toc-num">07</span>English Test</a>
+      <a href="#accommodation"><span class="toc-num">08</span>Accommodation</a>
+      <a href="#process"><span class="toc-num">09</span>How to Apply</a>
+      <a href="#fees"><span class="toc-num">10</span>Fees &amp; Costs</a>
+      <a href="#processing"><span class="toc-num">11</span>Processing Time</a>
+      <a href="#extension"><span class="toc-num">12</span>Extension &amp; ILR</a>
+      <a href="#marriage"><span class="toc-num">13</span>Overseas Marriage</a>
+      <a href="#fiance"><span class="toc-num">14</span>Fiancé Visa</a>
+      <a href="#children"><span class="toc-num">15</span>Children</a>
+      <a href="#checklists"><span class="toc-num">16</span>Checklists</a>
+      <a href="#refusal"><span class="toc-num">17</span>Refusal &amp; Appeals</a>
+      <a href="#special"><span class="toc-num">18</span>Special Cases</a>
+      <a href="#faq"><span class="toc-num">19</span>FAQ</a>
+    </div>
+  </div>
+</div>
+
 <!-- FIXED CTA BAR -->
 <div class="fixed-cta" id="fixedCta">
   <span class="fixed-cta-text">Need help with your application? <strong>Talk to us today.</strong></span>
@@ -584,9 +643,9 @@ footer p{font-size:.73rem;color:var(--text-light);margin-top:.15rem;letter-spaci
   function lockScroll(){scrollY=window.scrollY;document.body.style.setProperty('--scroll-y','-'+scrollY+'px');document.body.classList.add('no-scroll')}
   function unlockScroll(){document.body.classList.remove('no-scroll');document.body.style.removeProperty('--scroll-y');window.scrollTo(0,scrollY)}
 
-  /* === HEADER SCROLL + FIXED CTA + BTT === */
-  var hdr=document.getElementById('hdr'),btt=document.getElementById('btt'),fixedCta=document.getElementById('fixedCta'),tick=false;
-  window.addEventListener('scroll',function(){if(!tick){requestAnimationFrame(function(){var y=window.scrollY;hdr.classList.toggle('sc',y>50);btt.classList.toggle('show',y>500);fixedCta.classList.toggle('show',y>200);tick=false});tick=true}},{passive:true});
+  /* === HEADER SCROLL + FIXED CTA + BTT + MOB TOC === */
+  var hdr=document.getElementById('hdr'),btt=document.getElementById('btt'),fixedCta=document.getElementById('fixedCta'),mobTocPill=document.getElementById('mobTocPill'),tick=false;
+  window.addEventListener('scroll',function(){if(!tick){requestAnimationFrame(function(){var y=window.scrollY;hdr.classList.toggle('sc',y>50);btt.classList.toggle('show',y>500);fixedCta.classList.toggle('show',y>200);if(mobTocPill)mobTocPill.classList.toggle('show',y>300);tick=false});tick=true}},{passive:true});
   btt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
 
   /* === MOBILE NAV — fully separate from header === */
@@ -614,6 +673,19 @@ footer p{font-size:.73rem;color:var(--text-light);margin-top:.15rem;letter-spaci
   var mq=window.matchMedia('(min-width:961px)');
   function setSticky(){var tc=document.getElementById('tc');if(tc)tc.style.cssText=mq.matches?'position:sticky;top:78px':''}
   setSticky();mq.addEventListener('change',setSticky);
+
+  /* === MOBILE TOC DRAWER === */
+  var mobTocOv=document.getElementById('mobTocOverlay'),mobTocDrawer=document.getElementById('mobTocDrawer'),mobTocLinksEl=document.getElementById('mobTocLinks');
+  function openToc(){mobTocOv.classList.add('open');mobTocPill.style.opacity='0'}
+  function closeToc(){mobTocOv.classList.remove('open');mobTocPill.style.opacity=''}
+  if(mobTocPill)mobTocPill.addEventListener('click',openToc);
+  if(mobTocOv)mobTocOv.addEventListener('click',function(e){if(e.target===mobTocOv)closeToc()});
+  if(mobTocLinksEl)mobTocLinksEl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){closeToc()})});
+
+  /* Active section highlighting in mobile TOC */
+  var mobTocAs=mobTocLinksEl?mobTocLinksEl.querySelectorAll('a'):[];
+  var tocSecObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){mobTocAs.forEach(function(a){a.classList.remove('active-sec')});var match=mobTocLinksEl?mobTocLinksEl.querySelector('a[href="#'+e.target.id+'"]'):null;if(match)match.classList.add('active-sec')}})},{threshold:.2,rootMargin:'-80px 0px -60% 0px'});
+  secs.forEach(function(s){tocSecObs.observe(s)});
 
   /* === FAQ === */
   document.querySelectorAll('.faq-q').forEach(function(btn){btn.addEventListener('click',function(){var item=btn.closest('.faq-item');var wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open')});if(!wasOpen)item.classList.add('open')})});
